@@ -1,0 +1,33 @@
+body
+{
+    padding: 0;
+    font: 14px sans-serif;
+    background: lightgray;
+}
+
+a
+{
+    color: #00b7ff;
+}
+
+rect.pattern_cell:hover
+{
+    fill: #fce57e;
+}
+rect.pattern_cell_selected,
+rect.pattern_cell.pattern_cell_selected:hover
+{
+    fill: black;
+}
+
+span.click_to_watch_game_live
+{
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+}
+span.click_to_watch_game_live:hover
+{
+     text-decoration: none;
+     text-shadow: 1px 1px 1px #555;
+}

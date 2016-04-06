@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <link rel='stylesheet' type='text/css' href='/stylesheets/style.css'>
+    <script type="text/javascript">
+        var pattern_dim_min = <%= pattern_dim_min %>;
+        var pattern_dim_max = <%= pattern_dim_max %>;
+        var pattern_dim_default = <%= pattern_dim_default %>;
+    </script>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <h2>Create pattern</h2>
+    <div id="create_pattern_box">
+        <form action="create_pattern" id="create_pattern_form">
+            <div>
+                <span>Name:&nbsp;</span>
+                <input
+                    type="text"
+                    id="create_pattern_name"
+                    name="create_pattern_name">
+            </div>
+            <div>
+                <span>width:&nbsp;</span>
+                <input
+                    type="number"
+                    id="create_pattern_width"
+                    name="create_pattern_width"
+                    min="<%= pattern_dim_min %>"
+                    max="<%= pattern_dim_max %>"
+                    value="<%= pattern_dim_default %>">
+                <span>height:&nbsp;</span>
+                <input
+                    type="number"
+                    id="create_pattern_height"
+                    name="create_pattern_height"
+                    min="<%= pattern_dim_min %>"
+                    max="<%= pattern_dim_max %>"
+                    value="<%= pattern_dim_default %>">
+            </div>
+            <div>
+                <svg id="create_pattern_container"></svg>
+            </div>
+            <div>
+                <input type="hidden" name="create_pattern" id="create_pattern_hidden">
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+    </div>
+
+    <script type='text/javascript' src='/javascripts/script.js'></script>
+  </body>
+</html>
