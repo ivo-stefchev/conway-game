@@ -1,5 +1,5 @@
 {
-  "name": "Conway's Game of Life",
+  "name": "conway_s_game_of_life",
   "version": "0.0.1",
   "description": "A simple game about Conway's zero player game Game of Life. Node.js app using Express 4, socket.io and MongoDB",
   "private": true,
