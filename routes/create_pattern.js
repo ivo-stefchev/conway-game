@@ -25,7 +25,8 @@ router.get('/', function(req, res, next) {
         'rows': gc.ROWS,
         'cols': gc.COLS,
         'cell': gc.CELL_SIZE,
-        'timeout': gc.TIMEOUT
+        'timeout': gc.TIMEOUT,
+        'localhost': gc.LOCALHOST
     });
 });
 

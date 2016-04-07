@@ -1,8 +1,12 @@
 var mongodb = require('mongodb');
+var gc = require('./global_const');
 var MongoClient;
 var DB;
-//var url = 'mongodb://localhost:27017/conway';
-var url = 'mongodb://95.87.226.163:27017/conway';
+var url = 'mongodb://localhost:27017/conway';
+if (!gc.LOCALHOST)
+{
+    url = 'mongodb://95.87.226.163:27017/conway';
+}
 var collection = {};
 collection.games = 'games';
 collection.status = 'status';
@@ -10,6 +14,7 @@ var status = {};
 status.start = 'start';
 status.playing = 'playing';
 status.finish = 'finish';
+status.replaying = 'replaying';
 
 module.exports.init = init;
 module.exports.close = close;
@@ -20,13 +25,41 @@ module.exports.get_currently_played_games = get_currently_played_games;
 module.exports.get_finished_games = get_finished_games;
 module.exports.set_as_playing = set_as_playing;
 module.exports.set_as_finished = set_as_finished;
+module.exports.set_as_replaying = set_as_replaying;
+module.exports.get_game_status = get_game_status;
+module.exports.get_game_generation = get_game_generation;
+
+function get_game_generation(id, generation, callback)
+{
+    var games_coll = DB.collection(collection.games);
+    games_coll.findOne({ 'game_id': id, 'generation': generation },
+        function (err, result) {
+
+            if (result === null)
+            {
+                callback(id, null, true);
+            }
+            else
+            {
+                callback(id, result.board, false);
+            }
+        });
+}
+
+function get_game_status(id, callback)
+{
+    var status_coll = DB.collection(collection.status);
+    status_coll.findOne({ 'game_id': id }, function (err, result) {
+        callback(id, result.status, result.name);
+    });
+}
 
 function get_currently_played_games(callback)
 {
     var status_coll = DB.collection(collection.status);
-    var fuck = status_coll.find({ 'status': status.playing });
+    var query_res = status_coll.find({ 'status': status.playing });
     var result = [];
-    fuck.each(function(err, doc) {
+    query_res.each(function(err, doc) {
         if (doc != null) {
             result.push(doc);
         } else {
@@ -38,9 +71,9 @@ function get_currently_played_games(callback)
 function get_finished_games(callback)
 {
     var status_coll = DB.collection(collection.status);
-    var fuck = status_coll.find({ 'status': status.finish });
+    var query_res = status_coll.find({ 'status': status.finish });
     var result = [];
-    fuck.each(function(err, doc) {
+    query_res.each(function(err, doc) {
         if (doc != null) {
             result.push(doc);
         } else {
@@ -62,6 +95,14 @@ function set_as_finished(id)
     var status_coll = DB.collection(collection.status);
     status_coll.updateOne({ 'game_id': id },
         { $set: { 'status': status.finish }},
+        function(err, results) {});
+}
+
+function set_as_replaying(id)
+{
+    var status_coll = DB.collection(collection.status);
+    status_coll.updateOne({ 'game_id': id },
+        { $set: { 'status': status.replaying }},
         function(err, results) {});
 }
 
