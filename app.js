@@ -17,6 +17,8 @@ var view = require('./routes/view');
 var create_pattern = require('./routes/create_pattern');
 var register_for_game = require('./routes/register_for_game');
 var web_socket_routes = require('./routes/web_socket_routes');
+var delete_list = require('./routes/delete_list');
+var delete_item = require('./routes/delete_item');
 
 var controller_matrix = require('./controller/matrix');
 var gc = require('./controller/global_const');
@@ -52,7 +54,8 @@ app.use('/create', create);
 app.use('/view', view);
 app.use('/create_pattern', create_pattern);
 app.use('/register_for_game', register_for_game);
-//app.use('/ws', web_socket_routes);
+app.use('/delete_list', delete_list);
+app.use('/delete_item', delete_item);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
