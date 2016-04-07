@@ -28,6 +28,19 @@ module.exports.set_as_finished = set_as_finished;
 module.exports.set_as_replaying = set_as_replaying;
 module.exports.get_game_status = get_game_status;
 module.exports.get_game_generation = get_game_generation;
+module.exports.delete_game = delete_game;
+
+function delete_game(id, callback)
+{
+    var status_coll = DB.collection(collection.status);
+    status_coll.remove({ 'game_id': id }, function (err, result) {
+        var games_coll = DB.collection(collection.games);
+        games_coll.remove({ 'game_id': id },
+            function (err, result) {
+                callback();
+        });
+    });
+}
 
 function get_game_generation(id, generation, callback)
 {

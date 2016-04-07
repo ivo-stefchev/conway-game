@@ -11,7 +11,6 @@ var app = express();
 //var expressWs = require('express-ws')(app);
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 var create = require('./routes/create');
 var view = require('./routes/view');
 var create_pattern = require('./routes/create_pattern');
@@ -49,7 +48,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
 app.use('/create', create);
 app.use('/view', view);
 app.use('/create_pattern', create_pattern);
