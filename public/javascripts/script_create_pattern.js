@@ -27,7 +27,7 @@ function Game(canvas, name_div, gen_div, ro, co, cell_size, to, id, start)
         this.canvas.attr("height", this.h + "px");
 
         //var socket = io.connect('http://localhost:3000/');
-        var socket = io.connect('http://' + window.document.location.host + '/');
+        var socket = io.connect('https://' + window.document.location.host + '/');
         socket.on('connect', function(data) {
             if (__this.start_game)
             {
