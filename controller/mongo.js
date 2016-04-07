@@ -1,7 +1,8 @@
 var mongodb = require('mongodb');
 var MongoClient;
 var DB;
-var url = 'mongodb://localhost:27017/conway';
+//var url = 'mongodb://localhost:27017/conway';
+var url = 'mongodb://95.87.226.163:27017/conway';
 var collection = {};
 collection.games = 'games';
 collection.status = 'status';
