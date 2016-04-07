@@ -39,15 +39,19 @@ function next_generation(id)
     web_socket_routes.emit_board(games[id]);
     games[id].board = controller_matrix.recalc_cells(games[id].board);
     games[id].generation++;
-    // TODO save board
 
     if (games[id].generation > gc.GENERATION_LIMIT)
     {
-        mongo.set_as_finished(id);
         // game stops here
+        mongo.set_as_finished(id);
         clearInterval(games_started[id]);
         delete games[id];
         delete games_started[id];
-        // TODO set new game status
+        web_socket_routes.game_over(id);
+    }
+    else
+    {
+        mongo.save_game_generation(id,
+                games[id].board, games[id].generation);
     }
 }

@@ -20,13 +20,13 @@ rect.pattern_cell.pattern_cell_selected:hover
     fill: black;
 }
 
-span.click_to_watch_game_live
+span.click_to_watch_game
 {
     cursor: pointer;
     color: blue;
     text-decoration: underline;
 }
-span.click_to_watch_game_live:hover
+span.click_to_watch_game:hover
 {
      text-decoration: none;
      text-shadow: 1px 1px 1px #555;

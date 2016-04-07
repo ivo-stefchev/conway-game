@@ -14,20 +14,31 @@ status.finish = 'finish';
 module.exports.init = init;
 module.exports.close = close;
 module.exports.save_game = save_game;
+module.exports.save_game_generation = save_game_generation;
 module.exports.get_initial_game = get_initial_game;
-module.exports.start_game = start_game;
 module.exports.get_currently_played_games = get_currently_played_games;
+module.exports.get_finished_games = get_finished_games;
 module.exports.set_as_playing = set_as_playing;
 module.exports.set_as_finished = set_as_finished;
-
-function start_game(id)
-{
-}
 
 function get_currently_played_games(callback)
 {
     var status_coll = DB.collection(collection.status);
     var fuck = status_coll.find({ 'status': status.playing });
+    var result = [];
+    fuck.each(function(err, doc) {
+        if (doc != null) {
+            result.push(doc);
+        } else {
+            callback(result);
+        }
+    });
+}
+
+function get_finished_games(callback)
+{
+    var status_coll = DB.collection(collection.status);
+    var fuck = status_coll.find({ 'status': status.finish });
     var result = [];
     fuck.each(function(err, doc) {
         if (doc != null) {
@@ -87,6 +98,20 @@ function save_game(id, board, name)
         'game_id': id,
         'board': board,
         'generation': 1
+    };
+
+    var games_coll = DB.collection(collection.games);
+    games_coll.insert(game_obj, function (err, result) {
+        if (err) { console.log(err); }
+    });
+}
+
+function save_game_generation(id, board, generation)
+{
+    var game_obj = {
+        'game_id': id,
+        'board': board,
+        'generation': generation
     };
 
     var games_coll = DB.collection(collection.games);

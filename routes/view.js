@@ -4,9 +4,17 @@ var url = require('url')
 var mongo = require('../controller/mongo');
 var gc = require('../controller/global_const');
 
-router.get('/', function(req, res, next) {
+router.get('/playing/', function(req, res, next) {
     res.render('view', {
-        'title': 'Conway\'s Game of Life'
+        'title': 'Conway\'s Game of Life',
+        'live': true
+    });
+});
+
+router.get('/finished/', function(req, res, next) {
+    res.render('view', {
+        'title': 'Conway\'s Game of Life',
+        'live': false
     });
 });
 
@@ -16,6 +24,14 @@ router.get('/get_currently_played_games', function(req, res, next) {
         res.json(games);
     }
     mongo.get_currently_played_games(callback);
+});
+
+router.get('/get_finished_games', function(req, res, next) {
+    function callback(games)
+    {
+        res.json(games);
+    }
+    mongo.get_finished_games(callback);
 });
 
 router.get('/game/*', function(req, res, next) {

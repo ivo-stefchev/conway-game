@@ -6,6 +6,7 @@ module.exports.io = io;
 module.exports.init = init;
 module.exports.register_play = register_play;
 module.exports.emit_board = emit_board;
+module.exports.game_over = game_over;
 
 function init(server)
 {
@@ -28,6 +29,11 @@ function register_play(callback)
 function emit_board(game)
 {
     io.sockets.emit('game_' + game.game_id, game);
+}
+
+function game_over(id)
+{
+    io.sockets.emit('game_over_' + id, id);
 }
 
 
