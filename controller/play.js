@@ -25,7 +25,7 @@ function start_game_middle(game_id, game_status, game_name)
 {
     if (game_status === 'finish')
     {
-        replay_game(game_id);
+        replay_game(game_id, game_name);
     }
     else if (game_status === 'start')
     {

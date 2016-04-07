@@ -22,6 +22,7 @@ router.get('/', function(req, res, next) {
         'title': 'Conway\'s Game of Life',
         'game_id': game_id,
         'start_game': true,
+        'old_game': false,
         'rows': gc.ROWS,
         'cols': gc.COLS,
         'cell': gc.CELL_SIZE,

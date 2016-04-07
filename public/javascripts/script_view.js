@@ -47,5 +47,8 @@ function populate_games_list(games)
 $("#list_of_games_to_choose").
     on("click", "span.click_to_watch_game", function() {
         var game_id = $(this).data('id');
-        window.location.href = "/view/game/" + game_id;
+        var url = '';
+        if (live_games) url = '/view/game/';
+        else url = '/view/game_saved/';
+        window.location.href = url + game_id;
     });

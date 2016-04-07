@@ -45,6 +45,27 @@ router.get('/game/*', function(req, res, next) {
         'title': 'Conway\'s Game of Life',
         'game_id': game_id,
         'start_game': false,
+        'old_game': false,
+        'rows': gc.ROWS,
+        'cols': gc.COLS,
+        'cell': gc.CELL_SIZE,
+        'timeout': gc.TIMEOUT,
+        'localhost': gc.LOCALHOST
+    });
+});
+
+router.get('/game_saved/*', function(req, res, next) {
+    var url_parts = url.parse(req.url, true);
+    var path = url_parts.pathname;
+    var re = /^\/game_saved\/([0-9a-f]*)/g
+    var exec = re.exec(path);
+    var game_id = exec[1];
+
+    res.render('create_pattern', {
+        'title': 'Conway\'s Game of Life',
+        'game_id': game_id,
+        'start_game': false,
+        'old_game': true,
         'rows': gc.ROWS,
         'cols': gc.COLS,
         'cell': gc.CELL_SIZE,
