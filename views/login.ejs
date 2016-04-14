@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <link rel='stylesheet' type='text/css' href='/stylesheets/style.css'>
+
+    <script>
+    </script>
+
+  </head>
+  <body>
+    <h1><%= title %></h1>
+
+    <div>
+        Login page
+    </div>
+
+    <div>
+        <form
+            action="login"
+            id="login_user_form"
+            method="post">
+            <div>
+                <span>Username:&nbsp;</span>
+                <input
+                    type="text"
+                    id="login_username"
+                    name="login_username">
+            </div>
+            <div>
+                <span>Password:&nbsp;</span>
+                <input
+                    type="password"
+                    id="login_password"
+                    name="login_password">
+            </div>
+            <div>
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+    </div>
+
+    <script type='text/javascript' src='/javascripts/script_login.js'></script>
+  </body>
+</html>

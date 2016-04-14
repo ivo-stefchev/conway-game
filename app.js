@@ -5,10 +5,13 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongo = require('./controller/mongo');
+var express_session = require('express-session')
+var authentication = require('./controller/authentication');
+var passport = require('passport')
+var uuid = require('uuid');
 mongo.init();
 
 var app = express();
-//var expressWs = require('express-ws')(app);
 
 var index = require('./routes/index');
 var create = require('./routes/create');
@@ -18,6 +21,8 @@ var register_for_game = require('./routes/register_for_game');
 var web_socket_routes = require('./routes/web_socket_routes');
 var delete_list = require('./routes/delete_list');
 var delete_item = require('./routes/delete_item');
+var login = require('./routes/login');
+var register = require('./routes/register');
 
 var controller_matrix = require('./controller/matrix');
 var gc = require('./controller/global_const');
@@ -46,6 +51,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express_session({
+    genid: function(req) {
+        // use UUIDs for session IDs 
+        return uuid.v4();
+    },
+    secret: 'keyboard cat',
+    resave: true,
+    saveUninitialized: true
+}))
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', index);
 app.use('/create', create);
@@ -54,6 +70,8 @@ app.use('/create_pattern', create_pattern);
 app.use('/register_for_game', register_for_game);
 app.use('/delete_list', delete_list);
 app.use('/delete_item', delete_item);
+app.use('/login', login);
+app.use('/register', register);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

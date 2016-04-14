@@ -2,7 +2,7 @@ var mongodb = require('mongodb');
 var gc = require('./global_const');
 var MongoClient;
 var DB;
-var url = 'mongodb://localhost:27017/conway';
+var url = 'mongodb://127.0.0.1:27017/conway';
 if (!gc.LOCALHOST)
 {
     url = 'mongodb://95.87.226.163:27017/conway';
@@ -10,6 +10,7 @@ if (!gc.LOCALHOST)
 var collection = {};
 collection.games = 'games';
 collection.status = 'status';
+collection.users = 'users';
 var status = {};
 status.start = 'start';
 status.playing = 'playing';
@@ -29,6 +30,47 @@ module.exports.set_as_replaying = set_as_replaying;
 module.exports.get_game_status = get_game_status;
 module.exports.get_game_generation = get_game_generation;
 module.exports.delete_game = delete_game;
+module.exports.add_user = add_user;
+module.exports.find_user_by_username = find_user_by_username;
+
+function find_user_by_username(username, callback)
+{
+    var users_coll = DB.collection(collection.users);
+    users_coll.findOne({ 'name': username },
+        function (err, result) {
+            console.log('find_user_by_username', result);
+            if (result === null)
+            {
+                callback(false);
+            }
+            else
+            {
+                callback(result);
+            }
+        });
+}
+
+function add_user(username, password, callback)
+{
+    var user_obj = {
+        'name': username,
+        'pass': password
+    };
+
+    var users_coll = DB.collection(collection.users);
+    users_coll.insert(user_obj, function (err, result) {
+        if (err)
+        {
+            console.log(err);
+        }
+        else
+        {
+            var user_id = result.insertedIds[0];
+            console.log('user_id', user_id);
+            callback(user_id);
+        }
+    });
+}
 
 function delete_game(id, callback)
 {

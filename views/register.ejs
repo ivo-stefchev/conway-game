@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <link rel='stylesheet' type='text/css' href='/stylesheets/style.css'>
+
+    <script>
+    </script>
+
+  </head>
+  <body>
+    <h1><%= title %></h1>
+
+    <div>
+        Register page
+    </div>
+
+    <div>
+        <div><%= server_message %></div>
+        <form
+            action="register"
+            id="register_user_form"
+            method="post">
+            <div>
+                <span>Username:&nbsp;</span>
+                <input
+                    type="text"
+                    id="register_username"
+                    name="register_username">
+            </div>
+            <div>
+                <span>Password:&nbsp;</span>
+                <input
+                    type="password"
+                    id="register_password"
+                    name="register_password">
+            </div>
+            <div>
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+    </div>
+
+    <script type='text/javascript' src='/javascripts/script_register.js'></script>
+  </body>
+</html>

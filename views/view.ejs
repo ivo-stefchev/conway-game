@@ -12,13 +12,16 @@
   </head>
   <body>
     <h1><%= title %></h1>
+
+    <%- include('show_user'); %>
+
     <% if (live) { %>
         <div>View currently played games.</div>
     <% } else { %>
         <div>View completed games.</div>
     <% } %>
     <div>
-        
+
     </div>
 
     <div id="list_of_games_to_choose"></div>
