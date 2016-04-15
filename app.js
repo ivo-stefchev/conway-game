@@ -4,10 +4,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var express_session = require('express-session')
-var passport = require('passport')
+var express_session = require('express-session');
+var passport = require('passport');
 var uuid = require('uuid');
-var url = require('url')
+var url = require('url');
 
 var mongo = require('./controller/mongo');
 mongo.init();

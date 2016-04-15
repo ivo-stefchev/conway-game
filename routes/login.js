@@ -5,6 +5,7 @@ var passport = require('passport');
 module.exports = router;
 
 router.get('/', function(req, res, next) {
+    req.session.redirect_after_successful_login = '/';
     res.render('login', {
         'title': 'Conway\'s Game of Life'
     });
@@ -12,6 +13,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {
+        console.log('auth', user);
         if (err) { return next(err); }
         if (!user) { return res.redirect('/login'); }
         req.logIn(user, function(err) {

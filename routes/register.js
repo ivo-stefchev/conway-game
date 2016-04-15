@@ -5,6 +5,7 @@ var passport = require('passport');
 module.exports = router;
 
 router.get('/', function(req, res, next) {
+    req.session.redirect_after_successful_login = '/';
     res.render('register', {
         'title': 'Conway\'s Game of Life',
         'server_message': 'No message'
@@ -25,9 +26,22 @@ router.post('/', function(req, res, next) {
             done(null, user_id);
         });
         */
+        /*
         res.render('register', {
             'title': 'Conway\'s Game of Life',
             'server_message': user_id
+        });
+        */
+        var user = {
+            '_id': user_id,
+            'name': username,
+            'pass': password
+        };
+        req.login(user, function(err) {
+            if (err) {
+                console.log(err);
+            }
+            return res.redirect('/');
         });
         /*
         return res.render('register', {

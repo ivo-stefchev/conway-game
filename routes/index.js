@@ -3,7 +3,8 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Conway\'s Game of Life' });
+    req.session.redirect_after_successful_login = '/';
+    res.render('index', { title: 'Conway\'s Game of Life' });
 });
 
 module.exports = router;
