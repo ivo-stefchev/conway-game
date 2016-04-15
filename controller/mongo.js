@@ -32,13 +32,30 @@ module.exports.get_game_generation = get_game_generation;
 module.exports.delete_game = delete_game;
 module.exports.add_user = add_user;
 module.exports.find_user_by_username = find_user_by_username;
+module.exports.find_user_by_id = find_user_by_id;
+
+function find_user_by_id(user_id, callback)
+{
+    var id_object = new mongodb.ObjectID(user_id);
+    var users_coll = DB.collection(collection.users);
+    users_coll.findOne({ '_id': id_object },
+        function (err, result) {
+            if (result === null)
+            {
+                callback(false);
+            }
+            else
+            {
+                callback(result);
+            }
+        });
+}
 
 function find_user_by_username(username, callback)
 {
     var users_coll = DB.collection(collection.users);
     users_coll.findOne({ 'name': username },
         function (err, result) {
-            console.log('find_user_by_username', result);
             if (result === null)
             {
                 callback(false);
@@ -66,7 +83,6 @@ function add_user(username, password, callback)
         else
         {
             var user_id = result.insertedIds[0];
-            console.log('user_id', user_id);
             callback(user_id);
         }
     });

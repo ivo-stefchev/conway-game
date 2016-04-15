@@ -9,7 +9,6 @@ var play = require('../controller/play');
 router.get('/', function(req, res, next) {
     var url_parts = url.parse(req.url, true);
     var pattern = url_parts.query;
-    //req.app.locals.register_new_game(query);
 
     var game_id = controller_game.construct(
         pattern.create_pattern_height,

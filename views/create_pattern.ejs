@@ -20,6 +20,9 @@
   </head>
   <body>
     <h1><%= title %></h1>
+
+    <%- include('show_user'); %>
+
     <% if (old_game) { %>
         <div>View saved game</div>
     <% } else if (start_game) { %>

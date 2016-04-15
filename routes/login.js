@@ -1,10 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var url = require('url')
 var mongo = require('../controller/mongo');
-var gc = require('../controller/global_const');
 var passport = require('passport');
-var passport_strategy_local = require('passport-local').Strategy;
 module.exports = router;
 
 router.get('/', function(req, res, next) {
@@ -13,31 +10,24 @@ router.get('/', function(req, res, next) {
     });
 });
 
+router.post('/', function(req, res, next) {
+    passport.authenticate('local', function(err, user, info) {
+        if (err) { return next(err); }
+        if (!user) { return res.redirect('/login'); }
+        req.logIn(user, function(err) {
+            if (err) { return next(err); }
+            var red_url = req.session.redirect_after_successful_login || '/';
+            req.session.redirect_after_successful_login = '/';
+            res.redirect(red_url);
+        });
+    })(req, res, next);
+});
+
+/*
 router.post('/',
     passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/login'
     })
 );
-
-/*
-router.post('/', function(req, res, next) {
-    var data = req.body;
-    passport.authenticate('local', function(err, user, info) {
-        if (err)
-        {
-            return next(err);
-        }
-
-        if (!user)
-        {
-            return res.redirect('/login');
-        }
-
-        req.logIn(user, function(err) {
-            if (err) { return next(err); }
-            return res.redirect('/users/' + user.username);
-        });
-    })(req, res, next);
-});
 */

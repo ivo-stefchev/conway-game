@@ -1,10 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var url = require('url')
 var mongo = require('../controller/mongo');
-var gc = require('../controller/global_const');
 var passport = require('passport');
-var passport_strategy_local = require('passport-local').Strategy;
 module.exports = router;
 
 router.get('/', function(req, res, next) {

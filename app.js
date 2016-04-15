@@ -4,12 +4,14 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mongo = require('./controller/mongo');
 var express_session = require('express-session')
-var authentication = require('./controller/authentication');
 var passport = require('passport')
 var uuid = require('uuid');
+var url = require('url')
+
+var mongo = require('./controller/mongo');
 mongo.init();
+var authentication = require('./controller/authentication');
 
 var app = express();
 
@@ -22,6 +24,7 @@ var web_socket_routes = require('./routes/web_socket_routes');
 var delete_list = require('./routes/delete_list');
 var delete_item = require('./routes/delete_item');
 var login = require('./routes/login');
+var logout = require('./routes/logout');
 var register = require('./routes/register');
 
 var controller_matrix = require('./controller/matrix');
@@ -51,26 +54,62 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(express_session({
     genid: function(req) {
-        // use UUIDs for session IDs 
+        // use UUIDs for session IDs
         return uuid.v4();
     },
     secret: 'keyboard cat',
     resave: true,
-    saveUninitialized: true
-}))
+    saveUninitialized: true,
+    cookie: { maxAge : new Date(Date.now() + 3600000) }
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', index);
-app.use('/create', create);
-app.use('/view', view);
+function logged_as(req, res, next)
+{
+    res.locals.login = false;
+    res.locals.username = '';
+    if (req.user)
+    {
+        res.locals.login = true;
+        function on_find_user_callback(user)
+        {
+            res.locals.username = user.name;
+            next();
+        }
+        mongo.find_user_by_id(req.user._id, on_find_user_callback);
+    }
+    else
+    {
+        next();
+    }
+}
+
+function logged_in(req, res, next)
+{
+    if (req.user)
+    {
+        next();
+    }
+    else
+    {
+        req.session.redirect_after_successful_login = req.originalUrl || '/';
+        res.redirect('/login');
+    }
+}
+
+app.use('/', logged_as, index);
+app.use('/create', logged_as, logged_in, create);
+app.use('/view', logged_as, logged_in, view);
 app.use('/create_pattern', create_pattern);
 app.use('/register_for_game', register_for_game);
-app.use('/delete_list', delete_list);
-app.use('/delete_item', delete_item);
+app.use('/delete_list', logged_as, logged_in, delete_list);
+app.use('/delete_item', logged_in, delete_item);
 app.use('/login', login);
+app.use('/logout', logout);
 app.use('/register', register);
 
 // catch 404 and forward to error handler
